@@ -216,16 +216,3 @@ class CRF:
     def load_obj(self, name):
         with open(name + '.pkl', 'rb') as f:
             return pickle.load(f)
-        
-
-if __name__ == '__main__':
-    crf = CRF(templatePath="dataset/dataset2/template.utf8", scoreMapPath="model\scoreMap", trainDataPath="dataset/dataset2/train.utf8")
-    # crf.start_train(100)
-    # print(crf.predict("沿海南方向逃跑"))
-    print(crf.predict("他说的确实在理"))
-    # print(crf.predict("谢霆锋和张柏芝离婚了"))
-    # print(crf.predict("结婚的和尚未结婚的"))
-    # print(crf.predict("提高产品质量"))
-    # print(crf.predict("中外科学名著"))
-    # print(crf.predict("北京大学生前来应聘"))
-    # print(crf.predict("为人民服务"))
