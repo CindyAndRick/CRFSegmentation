@@ -125,11 +125,11 @@ class CRF:
         for i in range(len(sentence)):
             if prediction[i] != truth[i]:
                 wrongNum += 1
-                self.updateTemplate("U", sentence, i, truth, prediction)
-                self.updateTemplate("B", sentence, i, truth, prediction)
+                self.updateWeights("U", sentence, i, truth, prediction)
+                self.updateWeights("B", sentence, i, truth, prediction)
         return wrongNum
 
-    def updateTemplate(self, type, sentence, index, truth, prediction):
+    def updateWeights(self, type, sentence, index, truth, prediction):
         template = []
         num = 0
         if type == "U":
