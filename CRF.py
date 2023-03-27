@@ -4,18 +4,22 @@ from datetime import datetime
 class CRF:
     scoreMap = dict()
     template = list()
+    idioms = list()
     scoreMapPath = ""
     templatePath = ""
     trainDataPath = ""
+    idiomsPath = ""
     rowStatus = {0: "B", 1: "M", 2: "E", 3: "S"}
     statusRow = {"B": 0, "M": 1, "E": 2, "S": 3}
 
-    def __init__(self, templatePath, scoreMapPath, trainDataPath):
+    def __init__(self, templatePath, scoreMapPath, trainDataPath, idiomsPath):
         self.scoreMap = self.load_obj(scoreMapPath)
         self.template = self.readTemplate(templatePath)
+        self.load_idioms(idiomsPath)
         self.scoreMapPath = scoreMapPath
         self.templatePath = templatePath
         self.trainDataPath = trainDataPath
+        self.idiomsPath = idiomsPath
 
     def getStrBtw(self, s, b, e):
         a = list()
@@ -181,11 +185,28 @@ class CRF:
 
     def predict(self, sentence):
         temp = self.segment(sentence)
+        if 0:
+            loc = -1
+            for item in self.idioms:
+                if item in sentence:
+                    loc = sentence.find(item)
+            temp = list(temp)
+            if temp[loc] != 'B':
+                temp[loc] = 'B'
+                if loc != 0 and temp[loc - 1] != 'S':
+                    temp[loc - 1] = 'E'
+            temp[loc + 1] = 'M'
+            temp[loc + 2] = 'M'
+            if temp[loc + 3] != 'E':
+                temp[loc + 3] = 'E'
+                if loc + 4 < len(temp) and temp[loc + 4] != 'S':
+                    temp[loc + 4] = 'B'
         res = ""
         for i in range(len(temp)):
             res += sentence[i]
             if temp[i]=='E' or temp[i]=='S':
-                res+=' '         
+                res+=' '
+                 
         return res
 
     def preprocessData(self):
@@ -208,6 +229,12 @@ class CRF:
         train_data = [sentence_set, tag_set]
         print("data prepared")
         return train_data
+    
+    def load_idioms(self, path):
+        with open(path, 'r', encoding='utf-8') as f:
+            for line in f.readlines():
+                self.idioms.append(line.strip())
+            f.close()
 
     def save_obj(self, obj, name, it):
         with open(name + '-' + str(it) + 'iter' + str(datetime.now()).replace(':', '-') + '.pkl', 'wb') as f:

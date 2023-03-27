@@ -1,7 +1,8 @@
 from CRF import CRF
 
 def shell():
-    crf = CRF(templatePath="dataset/dataset2/template.utf8", scoreMapPath="model\scoreMap", trainDataPath="dataset/dataset2/train.utf8")
+    crf = CRF(templatePath="dataset/dataset2/template.utf8", scoreMapPath="model\scoreMap",
+              trainDataPath="dataset/dataset2/train.utf8", idiomsPath="dataset/dataset2/idioms.utf8")
     while True:
         sentence = input("请输入句子：")
         if sentence == "exit":
@@ -11,3 +12,6 @@ def shell():
 if __name__ == '__main__':
     # crf.start_train(100)
     shell()
+    # crf = CRF(templatePath="dataset/dataset2/template.utf8", scoreMapPath="model\scoreMap",
+    #             trainDataPath="dataset/dataset2/train.utf8", idiomsPath="dataset/dataset2/idioms.utf8")
+    # print(crf.predict("我是中国人"))
